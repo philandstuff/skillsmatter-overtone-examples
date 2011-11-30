@@ -58,6 +58,9 @@
 
 (comment
   (detuned-saws)
+  ;; compare:
+  (basic-saw)
+  (detuned-saws 100) ;; compare with below
   )
 
 ;; we can use one oscillator as the input to another. Here we control
@@ -93,3 +96,43 @@
 
 ;; See examples.dubstepbass from the overtone distribution for a much
 ;; more involved dubstep oscillator!
+
+
+
+;; Sometimes it's better to work with notes rather than
+;; frequencies. First we can use MIDI notes, where middle C is defined
+;; as 60:
+
+(midi->hz 60)
+;;=> 261.62556...
+
+;; an octave is 12 semitones, so we can add 12 to the midi note to get
+;; the next octave, which doubles the frequency:
+(midi->hz 72)
+;;=> 523.2511...
+
+;; use it in a synth like this:
+(comment
+  (dubstep (midi->hz 60))
+  )
+
+;; MIDI notes are more abstract than frequencies, but sometimes it's
+;; nicer to work with note names. We can use the note function:
+
+(note :c4)
+;;=> 60
+
+(comment
+  (dubstep (midi->hz (note :c4)))
+  )
+
+;; often, rather than doing the conversion inline, we'll translate a
+;; list of notes into a list of frequencies which we'll later play:
+
+(def notes (vec (map (comp midi->hz note) [:c3 :g3 :c3])))
+;;=> (130.8127826502993 195.99771799087463 130.8127826502993)
+
+(comment
+  (dubstep (notes 0))
+  (dubstep (notes 1))
+  )

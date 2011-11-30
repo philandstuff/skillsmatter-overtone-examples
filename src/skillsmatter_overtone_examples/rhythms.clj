@@ -118,3 +118,27 @@
 (comment
   (phat-beats metro (metro))
   )
+
+;; and combining ideas from sounds.clj with the rhythm ideas here:
+
+(definst dubstep [freq 100 wobble-freq 5]
+  (let [sweep (lin-exp (lf-saw wobble-freq) -1 1 40 5000)
+        son   (mix (saw (* freq [0.99 1 1.01])))]
+    (lpf son sweep)))
+
+(def notes (vec (map (comp midi->hz note) [:g1 :g2 :d2 :f2 :c2 :c3 :bb1 :bb2
+                                           :a1 :a2 :e2 :g2 :d2 :d3 :c2 :c3])))
+
+(defn bass [m num notes]
+  (at (m num)
+      (ctl dubstep :freq (first notes))
+      (when (zero? (mod num 4))
+        (ctl dubstep :wobble-freq (choose [4 6 8 16]))))
+  (apply-at (m (inc num)) bass m (inc num) (next notes) []))
+
+(comment
+  (do
+    (dubstep)
+    (bass metro (metro) (cycle notes))
+    )
+  )

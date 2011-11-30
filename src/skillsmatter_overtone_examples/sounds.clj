@@ -94,6 +94,14 @@
   (dubstep 50 6)
   )
 
+;; we can control the oscillator once it has started
+(comment
+  (dubstep)
+  (ctl dubstep :wobble-freq 4)
+  (ctl dubstep :wobble-freq 10)
+  (ctl dubstep :wobble-freq 2)  
+  )
+
 ;; See examples.dubstepbass from the overtone distribution for a much
 ;; more involved dubstep oscillator!
 

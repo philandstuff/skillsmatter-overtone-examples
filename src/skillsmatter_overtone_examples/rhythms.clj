@@ -121,24 +121,43 @@
 
 ;; and combining ideas from sounds.clj with the rhythm ideas here:
 
+;; first we bring back the dubstep inst
+
 (definst dubstep [freq 100 wobble-freq 5]
   (let [sweep (lin-exp (lf-saw wobble-freq) -1 1 40 5000)
         son   (mix (saw (* freq [0.99 1 1.01])))]
     (lpf son sweep)))
 
+;; define a vector of frequencies from a tune
+;; later, we use (cycle notes) to repeat the tune indefinitely
+
 (def notes (vec (map (comp midi->hz note) [:g1 :g2 :d2 :f2 :c2 :c3 :bb1 :bb2
                                            :a1 :a2 :e2 :g2 :d2 :d3 :c2 :c3])))
 
+;; bass is a function which will play the first note in a sequence,
+;; then schedule itself to play the rest of the notes on the next beat
+
 (defn bass [m num notes]
   (at (m num)
-      (ctl dubstep :freq (first notes))
-      (when (zero? (mod num 4))
-        (ctl dubstep :wobble-freq (choose [4 6 8 16]))))
+      (ctl dubstep :freq (first notes)))
   (apply-at (m (inc num)) bass m (inc num) (next notes) []))
+
+;; wobble changes the wobble factor randomly every 4th beat
+
+(defn wobble [m num]
+  (when (zero? (mod num 4))
+    (at (m num)       
+        (ctl dubstep :wobble-freq
+             (choose [4 6 8 16]))))
+  (apply-at (m (inc num)) wobble m (inc num) [])
+  )
+
+;; put it all together
 
 (comment
   (do
-    (dubstep)
+    (dubstep) ;; start the synth, so that bass and wobble can change it
     (bass metro (metro) (cycle notes))
+    (wobble metro (metro))
     )
   )

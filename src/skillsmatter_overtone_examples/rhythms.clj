@@ -145,11 +145,10 @@
 ;; wobble changes the wobble factor randomly every 4th beat
 
 (defn wobble [m num]
-  (when (zero? (mod num 4))
-    (at (m num)       
-        (ctl dubstep :wobble-freq
-             (choose [4 6 8 16]))))
-  (apply-at (m (inc num)) wobble m (inc num) [])
+  (at (m num)       
+      (ctl dubstep :wobble-freq
+           (choose [4 6 8 16])))
+  (apply-at (m (+ 4 num)) wobble m (+ 4 num) [])
   )
 
 ;; put it all together

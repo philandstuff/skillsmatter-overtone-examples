@@ -9,14 +9,15 @@
   <classpathentry kind="lib" path="lib/clojure-1.3.0.jar"/>
   <classpathentry kind="lib" path="lib/commons-net-3.0.1.jar"/>
   <classpathentry kind="lib" path="lib/core.incubator-0.1.0.jar"/>
+  <classpathentry kind="lib" path="lib/core.match-0.2.0-alpha6.jar"/>
   <classpathentry kind="lib" path="lib/data.json-0.1.2.jar"/>
-  <classpathentry kind="lib" path="lib/java-osc-cvs-SNAPSHOT.jar"/>
+  <classpathentry kind="lib" path="lib/java-osc-cvs-20100502.112537-4.jar"/>
   <classpathentry kind="lib" path="lib/jmdns-3.2.1.jar"/>
   <classpathentry kind="lib" path="lib/jna-3.2.4.jar"/>
   <classpathentry kind="lib" path="lib/midi-clj-0.2.1.jar"/>
   <classpathentry kind="lib" path="lib/miglayout-3.7.3.1.jar"/>
   <classpathentry kind="lib" path="lib/osc-clj-0.7.1.jar"/>
-  <classpathentry kind="lib" path="lib/overtone-0.5.0.jar"/>
-  <classpathentry kind="lib" path="lib/scsynth-jna-0.1.2-SNAPSHOT.jar"/>
+  <classpathentry kind="lib" path="lib/overtone-0.6.0.jar"/>
+  <classpathentry kind="lib" path="lib/scsynth-jna-0.1.2-20100502.112537-1.jar"/>
   <classpathentry kind="output" path="classes"/>
 </classpath>

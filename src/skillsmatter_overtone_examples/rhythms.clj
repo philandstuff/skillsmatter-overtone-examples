@@ -9,16 +9,17 @@
 (definst hat [volume 1.0]
   (let [src (white-noise)
         env (env-gen (perc 0.001 0.3) :action FREE)]
-    (* volume 3 src env)))
+    (* volume 1 src env)))
 
 (comment
   (hat)
   )
 
-;; pretty crude kick, made from 2 sin oscillators with rapidly
-;; decreasing frequencies, shaped by a percussive envelope
+;; sampled kick drum
 
-(definst kick [volume 1.0]
+(def kick (sample (freesound-path 2086)))
+
+#_(definst kick [volume 1.0]
   (let [body-freq (* 220 (env-gen (lin-env 0.01 0 0.3 1) :action NO-ACTION))
         body (sin-osc body-freq)
         
@@ -69,7 +70,7 @@
 ;; metronome counts beats over time. Here's a metronome at 180 beats
 ;; per minute (bpm):
 
-(def metro (metronome 180))
+(defonce metro (metronome 240))
 
 ;; we use it as follows:
 
@@ -94,8 +95,8 @@
 ;; because we're using a metronome, we can change the speed:
 
 (comment
-  (metro :bpm 120) ;slower
-  (metro :bpm 240) ;faster
+  (metro :bpm 180) ;slower
+  (metro :bpm 300) ;faster
   )
 
 ;; a more complex rhythm
@@ -105,13 +106,14 @@
 
 (defn phat-beats [m beat-num]
   (at (m (+ 0 beat-num)) (kick) (weak-hat))
-
-  (at (m (+ 2 beat-num)) (hat))
-  (at (m (+ 3 beat-num)) (kick))
+  (at (m (+ 1 beat-num)) (kick))
+  (at (m (+ 2 beat-num))        (hat))
+  (at (m (+ 3 beat-num)) (kick) (weak-hat))
   (at (m (+ 4 beat-num)) (kick) (weak-hat))
-
+  (at (m (+ 4.5 beat-num)) (kick))
+  (at (m (+ 5 beat-num)) (kick))
   (at (m (+ 6 beat-num)) (kick) (hat) )
-
+  (at (m (+ 7 beat-num))        (weak-hat) )
   (apply-at (m (+ 8 beat-num)) phat-beats m (+ 8 beat-num) [])
   )
 
@@ -155,6 +157,7 @@
 
 (comment
   (do
+    (metro :bpm 180)
     (dubstep) ;; start the synth, so that bass and wobble can change it
     (bass metro (metro) (cycle notes))
     (wobble metro (metro))

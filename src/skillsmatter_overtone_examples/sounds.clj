@@ -1,6 +1,21 @@
 (ns skillsmatter-overtone-examples.sounds
   (:use overtone.live))
 
+;; define a piano scale based on samples from freesound.org
+
+(def sample-ids
+  {:c 148432, :d 148513, :e 148524, :f  148506
+   :g 148503, :a 148488, :b 148479, :c+ 148431})
+
+(def samples
+  (into {}
+        (for [[note id] sample-ids]
+          [note (sample (freesound-path id))])))
+
+(defn piano [note]
+  (let [sample (samples note)]
+    (sample)))
+
 ;; First, some basic oscillators
 
 (definst basic-sine [freq 440]

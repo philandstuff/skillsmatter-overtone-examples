@@ -16,19 +16,11 @@
   )
 
 ;; sampled kick drum
+;; from http://www.freesound.org/people/opm/sounds/2086/
+;; the overtone freesound API allows you to download freesounds samples
+;; by id (2086 in this case)
 
 (def kick (sample (freesound-path 2086)))
-
-#_(definst kick [volume 1.0]
-  (let [body-freq (* 220 (env-gen (lin-env 0.01 0 0.3 1) :action NO-ACTION))
-        body (sin-osc body-freq)
-        
-        pop-freq (+ 220 (* 200 (env-gen (lin-env 0.01 0 0.1 1) :action NO-ACTION)))
-        pop  (sin-osc pop-freq)
-        
-        env  (env-gen (perc 0.001 0.25) :action FREE)
-        ]
-    (* 4 env (+ body pop))))
 
 (comment
   (kick)
